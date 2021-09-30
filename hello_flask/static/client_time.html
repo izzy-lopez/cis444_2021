@@ -4,10 +4,82 @@
         <!-- head definitions go here -->
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     </head>
+    <style>
+	h1 {
+		text-align: center;
+		outline: solid 5px black;
+		transition: outline 0.4s linear;
+		margin: 0.5em;
+	}
+
+	h1:hover {
+		outline-width: 10px;
+	}
+
+	.row {
+		display: flex;
+	}
+
+	.column {
+		flex: 33.33%;
+		padding: 5px;
+	}
+
+	img {
+		filter: grayscale(100%) blur(4px);
+	}
+
+    </style>
     <body>
 	    <h1 id="mytime"></h1>
+	    <h2 id="greeting"></h2>
+	    <div class="row">
+		    <div class="column">
+	    		<img id="morning" src="morning-icon.png" alt="morning" style="width:100%">
+		    </div>
+		    <div class="column">
+	    		<img id="noon" src="noon-icon.png" alt="noon" style="width:100%">
+		    </div>
+		    <div class="column">
+			<img id="night" src="night-icon.png" alt="night" style="width:100%">
+		    </div>
+	    </div>
 	<script>
-		setInterval( function(){ $('#mytime').html( "Time is " + new Date());}, 500);
+		/*
+		change the color each second
+		*/
+		setInterval(function() {
+			$('#mytime').html("Time is " + new Date());
+			var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink'];
+			var rand = colors[Math.floor(Math.random() * colors.length)];
+			$('#mytime').css('color', rand);
+		}, 1000);
+	</script>
+	<script>
+		/*
+		determine which icon to make visible
+		based on the time of the day
+		*/
+		setInterval(function() {
+			var time = new Date().getHours();
+			switch(true) {
+				case (time >= 0 && time < 11):
+					$('#morning').css('filter', 'grayscale(0%) blur(0px)');
+					$('#noon').css('filter', 'grayscale(100%) blur(4px)');
+					$('#night').css('filter', 'grayscale(100%) blur(4px)');
+					break;
+				case (time >= 12 && time < 17):
+					$('#morning').css('filter', 'grayscale(100%) blur(4px)');
+					$('#noon').css('filter', 'grayscale(0%) blur(0px)');
+					$('#night').css('filter', 'grayscale(100%) blur(4px)');
+					break;
+				case (time >= 17 && time < 24):
+					$('#morning').css('filter', 'grayscale(100%) blur(4px)');
+					$('#noon').css('filter', 'grayscale(100%) blur(4px)');
+					$('#night').css('filter', 'grayscale(0%) blur(0px)');
+					break;
+			}
+		}, 10);
 	</script>
     </body>
 </html>
