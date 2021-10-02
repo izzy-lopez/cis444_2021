@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- head definitions go here -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+	<style>
+		.container {
+			position: fixed;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			background-color:rgba(0, 0, 0, 0.5);
+		}
+
+		.child {
+			float: left;
+			padding: 50px;
+		}
+
+		h1 {
+			text-align: center;
+			font-family: 'Creepster', cursive;
+			font-size: 45px;
+			color: white;
+		}
+
+		h2 {
+			text-align: center;
+			font-family: 'Creepster', cursive;
+			font-size: 70px;
+			color: white;
+		}
+
+		body {
+			background-image: url("{{img_url}}/halloween-bg.jpg");
+		}
+
+		.metric {
+			text-align: center;
+			font-family: 'Creepster', cursive;
+			font-size: 40px;
+		}
+
+		#seconds {
+			color: #ee5486;
+		}
+	</style>
+    </head>
+    <body>
+	    <div class="container">
+		    <h1>Halloween Countdown</h1>
+
+		    <div class="child">
+			    <h2>{{days_remain}}<h2>
+			    <div class=metric>
+				    <h5>days</h5>
+			    </div>
+		    </div>
+
+	  	    <div class="child">
+			    <h2>{{hours_remain}}<h2>
+			    <div class=metric>
+				    <h5>hours</h5>
+			    </div>
+		    </div>
+
+		    <div class="child">
+			    <h2>{{minutes_remain}}<h2>
+			    <div class=metric>
+				    <h5>minutes</h5>
+			    </div>
+		    </div>
+
+		    <div class="child">
+			    <h2 id="seconds">{{seconds_remain}}<h2>
+			    <div class=metric>
+				    <h5>seconds</h5>
+			    </div>
+		    </div>
+
+	    </div> 
+    </body>
+</html>

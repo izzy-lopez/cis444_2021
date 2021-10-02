@@ -1,6 +1,7 @@
 from flask import Flask,render_template,request
 
 import datetime
+import pytz
 
 app = Flask(__name__)
 
@@ -13,7 +14,7 @@ IMGS_URL = {
             "PRD" : "http://d2cbuxq67vowa3.cloudfront.net/images"
             }
 
-CUR_ENV = "PRD"
+CUR_ENV = "DEV"
 
 @app.route('/') #endpoint
 def index():
@@ -41,6 +42,18 @@ def backp():
 def ss1():
     return render_template('server_time.html', server_time= str(datetime.datetime.now()) )
 
+#creating my own endpoint for Assignment 2
+@app.route('/halloween') #endpoint
+def halloween():
+    time_until_halloween = datetime.datetime(2021, 10, 31) - datetime.datetime.now()
+    
+    days = time_until_halloween.days
+    seconds = time_until_halloween.seconds
+    hours = (seconds // 3600) # note that the server is 7 hours ahead of PST
+    minutes = (seconds // 60) % 60
+    seconds = seconds % 60
+
+    return render_template('countdown_halloween.html', days_remain = str(days), hours_remain = str(hours), minutes_remain = str(minutes), seconds_remain = str(seconds), img_url=IMGS_URL[CUR_ENV])
 
 app.run(host='0.0.0.0', port=80)
 
