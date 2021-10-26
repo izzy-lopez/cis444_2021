@@ -112,7 +112,6 @@
             // check that a jwt exists
             var jwt = Cookies.get("jwt");
             if (typeof jwt === 'undefined') {
-                Cookies.remove('jwt');
                 window.location.assign("/static/assignment3/login.html");
             }
             

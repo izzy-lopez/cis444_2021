@@ -319,6 +319,7 @@ def buy_selected_book():
 
     cur.close()
     global_db_con.commit()  
+    print("Purchase successful")
     
     # REencode the jwt to include the user's current list of books
     reencoded_jwt = jwt.encode(
