@@ -8,3 +8,17 @@ def get_db_instance():
     cur  = db.cursor( )
 
     return db, cur 
+
+if __name__ == "__main__":
+    db, cur = get_db_instance()
+
+    cur.execute("select * from users")
+    for r in cur.fetchall():
+        print(r)
+
+    cur.execute("create table music ( song_name varchar(255), rating int);")
+    db.commit()
+
+
+
+
