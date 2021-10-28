@@ -112,7 +112,7 @@
             // check that a jwt exists
             var jwt = Cookies.get("jwt");
             if (typeof jwt === 'undefined') {
-                window.location.assign("/static/assignment3/login.html");
+                window.location.assign("/static/login.html");
             }
             
            /**
@@ -127,7 +127,7 @@
                 }, function(data, status) {
                     if (!data.logged_in) {
                         Cookies.remove('jwt');
-                        window.location.assign("/static/assignment3/login.html");
+                        window.location.assign("/static/login.html");
                     }
                     // display the username
                     $("#greeting").html(`Howdy, ${data.username}!`);
@@ -147,7 +147,7 @@
             */
             function logout() {
                 Cookies.remove('jwt');
-                window.location.assign("/static/assignment3/login.html");
+                window.location.assign("/static/login.html");
             }
 
            /**
@@ -162,7 +162,7 @@
                 }, function(data, status) {
                     if (!data.logged_in) {
                         Cookies.remove('jwt');
-                        window.location.assign("/static/assignment3/login.html");
+                        window.location.assign("/static/login.html");
                     }
                     if (!data.buy_success) {
                         alert(`Oops, looks like you may already own ${selected_book}!`);
