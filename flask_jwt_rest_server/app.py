@@ -18,6 +18,8 @@ from tools.logging import logger
 
 ERROR_MSG = "Ooops.. Didn't work!"
 
+DEBUG = True
+
 
 #Create our app
 app = Flask(__name__)
@@ -29,8 +31,11 @@ def init_new_env():
     if 'db' not in g:
         g.db = get_db()
 
-    if 'secrets' not in g:
-        g.secrets = get_secrets()
+    if DEBUG == False:
+        if 'secrets' not in g:
+            g.secrets = get_secrets()
+    else:
+            g.secrets = {"JWT": "KxQ(S#@>\"5=m$#58SgzD,+H+a73*pzKH,g5_"}
 
 #This gets executed by default by the browser if no page is specified
 #So.. we redirect to the endpoint we want to load the base page
