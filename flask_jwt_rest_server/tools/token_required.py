@@ -1,17 +1,14 @@
 import jwt
 from functools import wraps
-from flask import request, redirect, g
-from flask_json import FlaskJSON, JsonError, json_response, as_json
+from flask import request, g
+from flask_json import json_response
 from tools.logging import logger
 from tools.get_aws_secrets import get_secrets
 
 def token_required(f):
     @wraps(f)
     def _verify(*args, **kwargs):
-        #secrets = get_secrets()
-        if 'secrets' not in g:
-            g.secrets = {"JWT": "KxQ(S#@>\"5=m$#58SgzD,+H+a73*pzKH,g5_"}
-
+        secrets = get_secrets()
         auth_headers = request.headers.get('Authorization', '').split(':')
 
         invalid_msg = {
@@ -30,7 +27,7 @@ def token_required(f):
         try:
             token = auth_headers[1]
             logger.debug("Got token")
-            data = jwt.decode(token, g.secrets['JWT'], algorithms=["HS256"])
+            data = jwt.decode(token, secrets['JWT'], algorithms=["HS256"])
             #set global jwt_data
             g.jwt_data = data
             return f(*args, **kwargs)

@@ -1,7 +1,7 @@
 import bcrypt
 from flask import request, g
 from psycopg2 import sql
-from flask_json import FlaskJSON, JsonError, json_response, as_json
+from flask_json import json_response
 from tools.token_tools import create_token
 from tools.logging import logger
 
@@ -31,4 +31,3 @@ def handle_request():
         return json_response( status_ = 401, message = 'Invalid credentials', authenticated = False )
 
     return json_response( token = create_token(jwt_data), authenticated = True )
-

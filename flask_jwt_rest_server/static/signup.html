@@ -20,14 +20,14 @@
             </div>
           </div>
 
-          <script>
-              /**
-               * Attempts to create a new account given the entered credentials.
-               * - username or password fields are empty: display an error.
-               * - callback is unsuccessful: display an error.
-               * - callback is successful: take user to next page.
-               */
-              function signup() {
+        <script>
+            /**
+             * Attempts to create a new account given the entered credentials.
+             * - username or password fields are empty: display an error.
+             * - callback is unsuccessful: display an error.
+             * - callback is successful: take user to next page.
+             */
+            function signup() {
                 if ($("#username").val().length === 0 || $("#password").val().length === 0) {
                     $("#error").html("Username and password cannot be empty.");
                     $("#error").css("visibility", "visible");
@@ -43,11 +43,11 @@
                     // note that data contains the parsed JSON (already a js variable)
                     Cookies.set('token', data.token);
                     window.location.assign("/static/books.html");
-                }). fail(function() {
+                }).fail(function(response) {
                     $("#error").html("Username is already in use.");
                     $("#error").css("visibility", "visible");
                 });
             }
-          </script>
+        </script>
     </body>
 </html>

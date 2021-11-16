@@ -1,12 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, g
-from flask_json import FlaskJSON, JsonError, json_response, as_json
-from db_con import get_db_instance, get_db
+from flask import Flask, redirect, g
+from flask_json import FlaskJSON, json_response
+from db_con import get_db
 from tools.token_required import token_required
+from tools.get_aws_secrets import get_secrets
 from tools.logging import logger
 import traceback
 
 ERROR_MSG = "Ooops.. Didn't work!"
-DEBUG = True
 
 app = Flask(__name__) #Create our app
 FlaskJSON(app) #add in flask json
@@ -16,12 +16,7 @@ def init_new_env():
     if 'db' not in g:
         g.db = get_db()
 
-    if DEBUG == False:
-        from tools.get_aws_secrets import get_secrets
-        if 'secrets' not in g:
-            g.secrets = get_secrets()
-    else:
-            g.secrets = {"JWT": "KxQ(S#@>\"5=m$#58SgzD,+H+a73*pzKH,g5_"}
+    g.secrets = get_secrets()
 
 
 #This gets executed by default by the browser if no page is specified

@@ -21,14 +21,14 @@
             </div>
           </div>
 
-          <script>
-              /**
-               * Attempts to log the user in given their entered credentials.
-               * - username or password fields are empty: display an error.
-               * - callback is unsuccessful: display an error.
-               * - callback is successful: take user to next page.
-               */
-              function login() {
+        <script>
+            /**
+             * Attempts to log the user in given their entered credentials.
+             * - username or password fields are empty: display an error.
+             * - callback is unsuccessful: display an error.
+             * - callback is successful: take user to next page.
+             */
+            function login() {
                 if ($("#username").val().length === 0 || $("#password").val().length === 0) {
                     $("#error").html("Username and password cannot be empty.");
                     $("#error").css("visibility", "visible");
@@ -49,6 +49,6 @@
                     $("#error").css("visibility", "visible");
 				});
             }
-          </script>
+        </script>
     </body>
 </html>

@@ -1,8 +1,19 @@
 from flask import request, g
 from psycopg2 import sql
-from flask_json import FlaskJSON, JsonError, json_response, as_json
+from flask_json import json_response
 from tools.token_tools import create_token
 from tools.logging import logger
+
+def getUserIdAndBookId(cur, username, book_title):
+    # get the user id
+    cur.execute(sql.SQL("SELECT id FROM users WHERE username = %s;"), (username,))
+    user_id = cur.fetchone()
+
+    # get the book id
+    cur.execute(sql.SQL("SELECT id FROM books WHERE title = %s;"), (book_title,))
+    book_id = cur.fetchone()
+
+    return user_id, book_id
 
 def handle_request():
     logger.debug("Get Books Handle Request")
@@ -24,19 +35,14 @@ def handle_request():
 
     # do not let the user purchase the book if they already own it
     if selected_book in user_owned_books:
+        logger.debug("Purchase unsuccessful")
         g.jwt_data['books'] = user_owned_books # include the user's books in the token
         return json_response( token = create_token(g.jwt_data), purchase_success =  False )
 
     user_owned_books.append(selected_book) # add the book to the user's list
     g.jwt_data['books'] = user_owned_books # include the user's books in the token
 
-    # get the user id
-    cur.execute(sql.SQL("SELECT id FROM users WHERE username = %s;"), (g.jwt_data['sub'],))
-    user_id = cur.fetchone()
-
-    # get the book id
-    cur.execute(sql.SQL("SELECT id FROM books WHERE title = %s;"), (selected_book,))
-    book_id = cur.fetchone()
+    user_id, book_id = getUserIdAndBookId(cur, g.jwt_data['sub'], selected_book)
 
     # insert the desired book to be purchased
     cur.execute(sql.SQL("INSERT INTO purchased_books (user_id, book_id) VALUES (%s, %s);"), (user_id[0], book_id[0],))
@@ -46,4 +52,3 @@ def handle_request():
     logger.debug("Purchase successful")
 
     return json_response( token = create_token(g.jwt_data), purchase_success = True )
-
