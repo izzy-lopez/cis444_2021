@@ -66,10 +66,8 @@
             function purchase_book() {
                 var selected_book = $("#book-selection").val();
 
-                secure_get_with_data_and_token("/secure_api/purchase_book",
-                {
-                    "selected_book": selected_book
-                }, function(data) {
+                secure_get_with_data_and_token("/secure_api/purchase_book", {"selected_book": selected_book}, 
+                function(data) {
                     if (!data.purchase_success) {
                         alert(`Oops, looks like you may already own ${selected_book}!`);
                     } else {
