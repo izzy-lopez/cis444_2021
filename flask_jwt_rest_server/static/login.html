@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
+        <link rel="stylesheet" href="login.css">
+    </head>
+    <body>
+        <div id="login-form">
+            <h3>Login</h3>
+            <h4 id="error"></h4>
+            <input type="text" id='username' name="username" placeholder="Username"/>
+            <br>
+            <input type="password" id='password' name="password" placeholder="Password"/>
+            <br>
+            <input type="button" id="login" value="Login" onclick="login();"/>
+            <br>
+            <br>
+            <div id=create-account>
+                Do not have an account?
+                <a href="/static/signup.html">Create an account</a>
+            </div>
+          </div>
+
+          <script>
+              /**
+               * Attempts to log the user in given their entered credentials.
+               * - username or password fields are empty: display an error.
+               * - callback is unsuccessful: display an error.
+               * - callback is successful: take user to next page.
+               */
+              function login() {
+                if ($("#username").val().length === 0 || $("#password").val().length === 0) {
+                    $("#error").html("Username and password cannot be empty.");
+                    $("#error").css("visibility", "visible");
+                    return;
+                }
+
+                // POST the entered credentials and determine how to proceed
+                $.post("/open_api/login", 
+                {
+                    username: $("#username").val(),
+                    password: $("#password").val()
+                }, function(data, status) {
+                    // note that data contains the parsed JSON (already a js variable)
+                    Cookies.set('token', data.token);
+                    window.location.assign("/static/books.html");
+                }).fail(function(response) {
+                    $("#error").html("Incorrect username or password.");
+                    $("#error").css("visibility", "visible");
+				});
+            }
+          </script>
+    </body>
+</html>

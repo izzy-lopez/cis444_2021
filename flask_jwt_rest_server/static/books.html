@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>    
+        <script src="/static/util.js"></script>
+        <link rel="stylesheet" href="books.css">
+    </head>
+    <body>
+        <div id="book-list">
+            <h1 id=greeting></h1>
+            <h3 id=price-title>Item Price USD</h3>
+            <h1 id=price name="price"></h1>
+            <select id="book-selection" name="book-selection" onchange="updatePrice();"></select>
+            <br>
+            <br>
+            <input type="button" id="buy" value="Buy Book" onclick="purchase_book();"/>
+            <br>
+            <input type="button" id="logout" value="Logout" onclick="logout();"/>
+          </div>
+
+          <script>
+            // use map to store books with their price
+            // (key:title, value:price)
+            var map_of_books = new Map();
+
+            // check that a jwt exists
+            var token = Cookies.get("token");
+            if (typeof token === 'undefined') {
+                window.location.assign("/static/login.html");
+            }
+            
+           /**
+            * Retrieves data about the user and books on window load.
+            * - callback is unsuccessful: redirect user to the login page.
+            * - callback is successful: greet the user and populate the books.
+            */
+            window.onload = function () {
+                secure_get_with_token("/secure_api/get_books",
+                function(data) {
+                    // display the username
+                    $("#greeting").html(`Howdy, ${data.username}!`);
+
+                    // populate the drop down with books available to purchase
+                    $.each(data.books, function(index, book) {
+                        $('<option>').val(book.title).text(book.title).appendTo('#book-selection');
+                        map_of_books.set(book.title, book.price);
+                    });
+                    
+                    updatePrice();
+                }, function(err) { 
+                    console.log(err) 
+                });
+            }
+
+           /**
+            * Logs the user out of their account by ending their session.
+            */
+            function logout() {
+                Cookies.remove('token');
+                window.location.assign("/static/login.html");
+            }
+
+           /**
+            * Attempts to purchase the current selected book.
+            */
+            function purchase_book() {
+                var selected_book = $("#book-selection").val();
+
+                secure_get_with_data_and_token("/secure_api/purchase_book",
+                {
+                    "selected_book": selected_book
+                }, function(data) {
+                    if (!data.purchase_success) {
+                        alert(`Oops, looks like you may already own ${selected_book}!`);
+                    } else {
+                        alert(`Successfully purchased ${selected_book}!`);
+                        token = data.token;
+                        Cookies.set('token', token);
+                    }
+                }, function(err) {
+                    console.log(err);
+                });
+            }
+
+           /**
+            * Updates the price in respect to the current selected book.
+            */
+            function updatePrice() {
+                selected_book = $("#book-selection").val();
+                $("#price").html("$" + map_of_books.get(selected_book));
+            }
+        </script>
+    </body>
+</html>

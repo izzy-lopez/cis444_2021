@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
+        <link rel="stylesheet" href="signup.css">
+    </head>
+    <body>
+        <div id="signup-form">
+            <h3>Sign Up</h3>
+            <h4 id="error"></h4>
+            <input type="text" id='username' name="username" placeholder="Username"/>
+            <br>
+            <input type="password" id='password' name="password" placeholder="Password"/>
+            <br>
+            <input type="button" id="signup" value="Sign Up" onclick="signup();"/>
+            <br>
+            <br>
+            <div id=login>
+                <a href="/static/login.html">Return to login</a>
+            </div>
+          </div>
+
+          <script>
+              /**
+               * Attempts to create a new account given the entered credentials.
+               * - username or password fields are empty: display an error.
+               * - callback is unsuccessful: display an error.
+               * - callback is successful: take user to next page.
+               */
+              function signup() {
+                if ($("#username").val().length === 0 || $("#password").val().length === 0) {
+                    $("#error").html("Username and password cannot be empty.");
+                    $("#error").css("visibility", "visible");
+                    return;
+                }
+
+                // POST the entered credentials and determine how to proceed
+                $.post("/open_api/signup", 
+                {
+                    username: $("#username").val(),
+                    password: $("#password").val()
+                }, function(data, status) {
+                    // note that data contains the parsed JSON (already a js variable)
+                    Cookies.set('token', data.token);
+                    window.location.assign("/static/books.html");
+                }). fail(function() {
+                    $("#error").html("Username is already in use.");
+                    $("#error").css("visibility", "visible");
+                });
+            }
+          </script>
+    </body>
+</html>

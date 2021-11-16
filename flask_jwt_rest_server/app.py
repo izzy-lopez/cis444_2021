@@ -1,29 +1,15 @@
-from flask import Flask,render_template,request, redirect, url_for, g
+from flask import Flask, render_template, request, redirect, url_for, g
 from flask_json import FlaskJSON, JsonError, json_response, as_json
-import jwt
-
-import sys
-import datetime
-import bcrypt
+from db_con import get_db_instance, get_db
+from tools.token_required import token_required
+from tools.logging import logger
 import traceback
 
-
-from db_con import get_db_instance, get_db
-
-from tools.token_required import token_required
-
-
-from tools.logging import logger
-
 ERROR_MSG = "Ooops.. Didn't work!"
-
 DEBUG = True
 
-
-#Create our app
-app = Flask(__name__)
-#add in flask json
-FlaskJSON(app)
+app = Flask(__name__) #Create our app
+FlaskJSON(app) #add in flask json
 
 #g is flask for a global var storage 
 def init_new_env():
@@ -37,17 +23,18 @@ def init_new_env():
     else:
             g.secrets = {"JWT": "KxQ(S#@>\"5=m$#58SgzD,+H+a73*pzKH,g5_"}
 
+
 #This gets executed by default by the browser if no page is specified
 #So.. we redirect to the endpoint we want to load the base page
 @app.route('/') #endpoint
 def index():
-    return redirect('/static/index.html')
+    return redirect('/static/login.html')
 
 
-@app.route("/secure_api/<proc_name>",methods=['GET', 'POST'])
+@app.route("/secure_api/<proc_name>", methods = ['GET', 'POST'])
 @token_required
 def exec_secure_proc(proc_name):
-    logger.debug(f"Secure Call to {proc_name}")
+    logger.debug("Secure Call to " + proc_name)
 
     #setup the env
     init_new_env()
@@ -62,15 +49,14 @@ def exec_secure_proc(proc_name):
         ex_data = ex_data + str(err) + '\n'
         ex_data = ex_data + traceback.format_exc()
         logger.error(ex_data)
-        return json_response(status_=500 ,data=ERROR_MSG)
+        return json_response( status_=500, data=ERROR_MSG )
 
     return resp
 
 
-
-@app.route("/open_api/<proc_name>",methods=['GET', 'POST'])
+@app.route("/open_api/<proc_name>", methods = ['GET', 'POST'])
 def exec_proc(proc_name):
-    logger.debug(f"Call to {proc_name}")
+    logger.debug("Call to " + proc_name)
 
     #setup the env
     init_new_env()
@@ -85,11 +71,10 @@ def exec_proc(proc_name):
         ex_data = ex_data + str(err) + '\n'
         ex_data = ex_data + traceback.format_exc()
         logger.error(ex_data)
-        return json_response(status_=500 ,data=ERROR_MSG)
+        return json_response( status_=500, data=ERROR_MSG )
 
     return resp
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
-
+    app.run(host = '0.0.0.0', port = 80)
