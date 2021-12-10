@@ -4,7 +4,7 @@ Although this repository stores all of my work done in CIS444, my Hogwarts Books
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the dependancies for this project under the hogwarts_bookstore directory.
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the dependencies for this project under the hogwarts_bookstore directory.
 
 ```bash
 pip install -r requirements.txt
