@@ -8,8 +8,6 @@ from tools.logging import logger
 import traceback
 import os
 
-print(os.getcwd() + '/www')
-
 ERROR_MSG = "Ooops.. Didn't work!"
 
 app = Flask(__name__, static_url_path='', static_folder=os.getcwd() + '/www') #Create our app
