@@ -1,6 +1,0 @@
-{
-    "python.pythonPath": "/usr/local/bin/python3",
-    "python.analysis.extraPaths": [
-        "./flask_jwt_rest_server/tools"
-    ]
-}
