@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html lang="en">
+    <head>
+        <!-- jQuery and model-viewer -->
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+        <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+        <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>        
+
+        <meta charset="utf-8">
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <meta http-equiv="Content-Security-Policy" content="default-src * self blob: data: gap:; style-src * self 'unsafe-inline' blob: data: gap:; script-src * 'self' 'unsafe-eval' 'unsafe-inline' blob: data: gap:; object-src * 'self' blob: data: gap:; img-src * self 'unsafe-inline' blob: data: gap:; connect-src self * 'unsafe-inline' blob: data: gap:; frame-src * self blob: data: gap:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">
+        <link rel="stylesheet" href="css/index.css">
+        
+        <title>Hogwarts Bookstore</title>
+    </head>
+    <body>
+
+        <!-- Used for background animation -->
+        <ul class="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+
+        <!-- Contains the sorting hat as a 3D obejct (very cool) -->
+        <!-- <div id="aSide">
+            <model-viewer bounds="tight" src="img/out.glb" ar ar-modes="webxr scene-viewer quick-look" camera-controls environment-image="neutral" shadow-intensity="1" camera-orbit="54.43deg 104.4deg auto" auto-rotate>
+            </model-viewer>
+        </div> -->
+
+        <!-- Contains the app's title -->
+        <div class="title">
+            <p>
+                Hogwarts
+                <br>
+                Bookstore
+            </p>
+        </div>
+
+        <!-- Contains the login/signup form -->
+        <div id="main" class="main">  	
+            <input type="checkbox" id="chk" aria-hidden="true">
+    
+                <div class="login">
+                    <form>
+                        <label for="chk" aria-hidden="true">Login</label>
+                        <input id="login-username" type="text" name="txt" placeholder="Username" required="">
+                        <input id="login-password" type="password" name="pswd" placeholder="Password" required="">
+                        <button type="button" onclick="login();">Login</button>
+                    </form>
+                </div>
+
+                <div class="signup">
+                    <form>
+                        <label for="chk" aria-hidden="true">Sign up</label>
+                        <input id="signup-username" type="text" name="txt" placeholder="Username" required="">
+                        <input id="signup-password" type="password" name="pswd" placeholder="Password" required="">
+                        <button type="button" onclick="signup();">Sign up</button>
+                    </form>
+                </div>
+        </div>
+
+        <!-- Contains the bookstore -->
+        <div id="app" class="main" style="display: none;">
+            <div class="book-list">
+                <label id=greeting></label>
+                <label id=price class="count" name="price"></label>
+                <label id=price-title>Gold-Galleons (ʛ)</label>
+                <select id="book-selection" class="minimal" name="book-selection" onchange="updatePrice();"></select>
+                <button id="buy-book" type="button" onclick="purchase_book();">Buy Book</button>
+                <button type="button" onclick="logout();">Logout</button>
+            </div>
+        </div>
+
+        <script src="js/index.js"></script>
+    </body>
+</html>
